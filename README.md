@@ -1,4 +1,4 @@
-🐾 CougarQuest Web
+🐾 **CougarQuest Web**
 
 Welcome to CougarQuest—a web app designed to supercharge your experience at BYU Sports Camps! 🚀 Built with a clean, intuitive interface, CougarQuest helps campers compete in quests, earn points, and track their progress throughout camp, making the entire experience fun, interactive, and engaging. 🎯
 
