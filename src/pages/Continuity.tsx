@@ -11,6 +11,7 @@ import {
   signInWithCredential,
 } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
 declare global {
   interface Window {
@@ -27,6 +28,7 @@ export default function Continuity() {
   const [lastName, setLastName] = useState('');
   const [sons, setSons] = useState<string[]>(['']);
   const db = getFirestore();
+  const navigate = useNavigate();
 
   // Removed getRedirectResult flow for Google popup
 
@@ -82,8 +84,8 @@ export default function Continuity() {
       const userRef = doc(db, 'users', user.uid);
       const snap = await getDoc(userRef);
       if (snap.exists()) {
-        // existing user: just go home
-        window.location.href = '/';
+        // existing user: go to Home
+        navigate('/');
         return;
       }
       // new user: create minimal record before asking for names
@@ -105,8 +107,20 @@ export default function Continuity() {
       const provider = new GoogleAuthProvider();
       provider.setCustomParameters({ prompt: 'select_account' });
       const result = await signInWithPopup(auth, provider);
-      if (result.user) {
-        window.location.reload();
+      const user = result.user;
+      if (user) {
+        const userRef = doc(db, 'users', user.uid);
+        const snap = await getDoc(userRef);
+        if (!snap.exists()) {
+          await setDoc(userRef, {
+            phoneNumber: user.phoneNumber || '',
+            name: user.displayName || '',
+            email: user.email || '',
+            points: 0,
+            isAdmin: false,
+          }, { merge: true });
+        }
+        navigate('/');
       }
     } catch (error: any) {
       console.error('Google sign-in error', error);
@@ -417,7 +431,7 @@ export default function Continuity() {
                   name: `${firstName} ${lastName}`,
                   sons,
                 }, { merge: true });
-                window.location.href = '/';
+                navigate('/profile');
               } catch (error: any) {
                 console.error('Account creation error', error);
                 alert('Failed to create account: ' + error.message);

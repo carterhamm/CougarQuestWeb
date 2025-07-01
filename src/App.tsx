@@ -3,6 +3,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import type { User } from 'firebase/auth';
 import { auth } from './firebase';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Privacy from './pages/Privacy';
 import Continuity from './pages/Continuity';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
@@ -31,23 +32,34 @@ function App() {
   }
   return (
     <BrowserRouter>
-      {!user ? (
-        <Continuity />
-      ) : (
-        <div className="flex min-h-screen bg-white">
-          <TabBar />
-          <div className="flex-1 p-6">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/quest/:id" element={<Quest />} />
-              <Route path="/quests" element={<Quests />} />
-              <Route path="/leaderboard" element={<Leaderboard />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/settings" element={<Settings />} />
-            </Routes>
-          </div>
-        </div>
-      )}
+      <Routes>
+        {/* Public Privacy Policy page */}
+        <Route path="/privacy" element={<Privacy />} />
+
+        {/* Authenticated routes */}
+        <Route
+          path="/*"
+          element={
+            !user ? (
+              <Continuity />
+            ) : (
+              <div className="flex min-h-screen bg-white">
+                <TabBar />
+                <div className="flex-1 p-6">
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="quest/:id" element={<Quest />} />
+                    <Route path="quests" element={<Quests />} />
+                    <Route path="leaderboard" element={<Leaderboard />} />
+                    <Route path="profile" element={<Profile />} />
+                    <Route path="settings" element={<Settings />} />
+                  </Routes>
+                </div>
+              </div>
+            )
+          }
+        />
+      </Routes>
     </BrowserRouter>
   );
 }

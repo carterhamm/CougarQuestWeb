@@ -42,6 +42,10 @@ export default function Leaderboard() {
             displayName = `${head}, and ${last}`;
           }
         }
+        // Default fallback if no name could be constructed
+        if (!displayName) {
+          displayName = 'Unnamed user';
+        }
         const points = data.points as number || 0;
         return {
           uid: doc.id,
@@ -150,7 +154,7 @@ export default function Leaderboard() {
                     fontWeight: isCurrentUser ? 'bold' : 'normal',
                   }}
                 >
-                  {user.displayName || user.uid.slice(0, 6)}
+                  {user.displayName || 'Unnamed user'}
                 </div>
               </div>
               <div
