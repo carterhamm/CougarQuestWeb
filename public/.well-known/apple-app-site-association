@@ -1,0 +1,18 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["HKM8P29B68.Tony.Stark.CougarQuest"],
+        "components": [
+          {
+            "/": "/quest/*",
+            "comment": "Universal Link for shared quests"
+          }
+        ]
+      }
+    ]
+  },
+  "appclips": {
+    "apps": ["HKM8P29B68.Tony.Stark.CougarQuest.Clip"]
+  }
+}
